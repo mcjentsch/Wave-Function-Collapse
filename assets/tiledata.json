@@ -1,0 +1,433 @@
+{
+  "tiles": [
+    "deep_water",
+    "shallow_water",
+    "beach",
+    "grass",
+    "forest",
+    "mountain",
+    "snow",
+    "desert",
+    "river",
+    "beach_water_n",
+    "beach_water_e",
+    "beach_water_s",
+    "beach_water_w",
+    "beach_water_ne",
+    "beach_water_nw",
+    "beach_water_se",
+    "beach_water_sw"
+  ],
+  "supports": {
+    "deep_water": {
+      "top": [
+        "deep_water",
+        "shallow_water",
+        "river"
+      ],
+      "right": [
+        "deep_water",
+        "shallow_water",
+        "river"
+      ],
+      "bottom": [
+        "deep_water",
+        "shallow_water",
+        "river"
+      ],
+      "left": [
+        "deep_water",
+        "shallow_water",
+        "river"
+      ]
+    },
+    "shallow_water": {
+      "top": [
+        "shallow_water",
+        "deep_water",
+        "river",
+        "beach_water_s",
+        "beach_water_se",
+        "beach_water_sw"
+      ],
+      "right": [
+        "shallow_water",
+        "deep_water",
+        "river",
+        "beach_water_w",
+        "beach_water_nw",
+        "beach_water_sw"
+      ],
+      "bottom": [
+        "shallow_water",
+        "deep_water",
+        "river",
+        "beach_water_n",
+        "beach_water_ne",
+        "beach_water_nw"
+      ],
+      "left": [
+        "shallow_water",
+        "deep_water",
+        "river",
+        "beach_water_e",
+        "beach_water_ne",
+        "beach_water_se"
+      ]
+    },
+    "beach": {
+      "top": [
+        "beach",
+        "grass",
+        "beach_water_n",
+        "beach_water_e",
+        "beach_water_s",
+        "beach_water_w",
+        "beach_water_ne",
+        "beach_water_nw",
+        "beach_water_se",
+        "beach_water_sw"
+      ],
+      "right": [
+        "beach",
+        "grass",
+        "beach_water_n",
+        "beach_water_e",
+        "beach_water_s",
+        "beach_water_w",
+        "beach_water_ne",
+        "beach_water_nw",
+        "beach_water_se",
+        "beach_water_sw"
+      ],
+      "bottom": [
+        "beach",
+        "grass",
+        "beach_water_n",
+        "beach_water_e",
+        "beach_water_s",
+        "beach_water_w",
+        "beach_water_ne",
+        "beach_water_nw",
+        "beach_water_se",
+        "beach_water_sw"
+      ],
+      "left": [
+        "beach",
+        "grass",
+        "beach_water_n",
+        "beach_water_e",
+        "beach_water_s",
+        "beach_water_w",
+        "beach_water_ne",
+        "beach_water_nw",
+        "beach_water_se",
+        "beach_water_sw"
+      ]
+    },
+    "grass": {
+      "top": [
+        "grass",
+        "beach",
+        "forest",
+        "river",
+        "desert"
+      ],
+      "right": [
+        "grass",
+        "beach",
+        "forest",
+        "river",
+        "desert"
+      ],
+      "bottom": [
+        "grass",
+        "beach",
+        "forest",
+        "river",
+        "desert"
+      ],
+      "left": [
+        "grass",
+        "beach",
+        "forest",
+        "river",
+        "desert"
+      ]
+    },
+    "forest": {
+      "top": [
+        "forest",
+        "grass",
+        "mountain"
+      ],
+      "right": [
+        "forest",
+        "grass",
+        "mountain"
+      ],
+      "bottom": [
+        "forest",
+        "grass",
+        "mountain"
+      ],
+      "left": [
+        "forest",
+        "grass",
+        "mountain"
+      ]
+    },
+    "mountain": {
+      "top": [
+        "mountain",
+        "forest",
+        "snow"
+      ],
+      "right": [
+        "mountain",
+        "forest",
+        "snow"
+      ],
+      "bottom": [
+        "mountain",
+        "forest",
+        "snow"
+      ],
+      "left": [
+        "mountain",
+        "forest",
+        "snow"
+      ]
+    },
+    "snow": {
+      "top": [
+        "snow",
+        "mountain",
+        "desert"
+      ],
+      "right": [
+        "snow",
+        "mountain",
+        "desert"
+      ],
+      "bottom": [
+        "snow",
+        "mountain",
+        "desert"
+      ],
+      "left": [
+        "snow",
+        "mountain",
+        "desert"
+      ]
+    },
+    "desert": {
+      "top": [
+        "desert",
+        "snow",
+        "grass",
+        "river"
+      ],
+      "right": [
+        "desert",
+        "snow",
+        "grass",
+        "river"
+      ],
+      "bottom": [
+        "desert",
+        "snow",
+        "grass",
+        "river"
+      ],
+      "left": [
+        "desert",
+        "snow",
+        "grass",
+        "river"
+      ]
+    },
+    "river": {
+      "top": [
+        "river",
+        "grass",
+        "desert",
+        "shallow_water",
+        "deep_water"
+      ],
+      "right": [
+        "river",
+        "grass",
+        "desert",
+        "shallow_water",
+        "deep_water"
+      ],
+      "bottom": [
+        "river",
+        "grass",
+        "desert",
+        "shallow_water",
+        "deep_water"
+      ],
+      "left": [
+        "river",
+        "grass",
+        "desert",
+        "shallow_water",
+        "deep_water"
+      ]
+    },
+    "beach_water_n": {
+      "top": [
+        "shallow_water"
+      ],
+      "right": [
+        "beach",
+        "beach_water_e",
+        "beach_water_ne"
+      ],
+      "bottom": [
+        "beach"
+      ],
+      "left": [
+        "beach",
+        "beach_water_w",
+        "beach_water_nw"
+      ]
+    },
+    "beach_water_e": {
+      "top": [
+        "beach",
+        "beach_water_n",
+        "beach_water_ne"
+      ],
+      "right": [
+        "shallow_water"
+      ],
+      "bottom": [
+        "beach",
+        "beach_water_s",
+        "beach_water_se"
+      ],
+      "left": [
+        "beach"
+      ]
+    },
+    "beach_water_s": {
+      "top": [
+        "beach"
+      ],
+      "right": [
+        "beach",
+        "beach_water_e",
+        "beach_water_se"
+      ],
+      "bottom": [
+        "shallow_water"
+      ],
+      "left": [
+        "beach",
+        "beach_water_w",
+        "beach_water_sw"
+      ]
+    },
+    "beach_water_w": {
+      "top": [
+        "beach",
+        "beach_water_n",
+        "beach_water_nw"
+      ],
+      "right": [
+        "beach"
+      ],
+      "bottom": [
+        "beach",
+        "beach_water_s",
+        "beach_water_sw"
+      ],
+      "left": [
+        "shallow_water"
+      ]
+    },
+    "beach_water_ne": {
+      "top": [
+        "shallow_water",
+        "beach_water_nw"
+      ],
+      "right": [
+        "shallow_water",
+        "beach_water_se"
+      ],
+      "bottom": [
+        "beach",
+        "beach_water_e",
+        "beach_water_s"
+      ],
+      "left": [
+        "beach",
+        "beach_water_n",
+        "beach_water_w"
+      ]
+    },
+    "beach_water_nw": {
+      "top": [
+        "shallow_water",
+        "beach_water_ne"
+      ],
+      "right": [
+        "beach",
+        "beach_water_n",
+        "beach_water_e"
+      ],
+      "bottom": [
+        "beach",
+        "beach_water_w",
+        "beach_water_s"
+      ],
+      "left": [
+        "shallow_water",
+        "beach_water_sw"
+      ]
+    },
+    "beach_water_se": {
+      "top": [
+        "beach",
+        "beach_water_e",
+        "beach_water_n"
+      ],
+      "right": [
+        "shallow_water",
+        "beach_water_ne"
+      ],
+      "bottom": [
+        "shallow_water",
+        "beach_water_sw"
+      ],
+      "left": [
+        "beach",
+        "beach_water_s",
+        "beach_water_w"
+      ]
+    },
+    "beach_water_sw": {
+      "top": [
+        "beach",
+        "beach_water_w",
+        "beach_water_n"
+      ],
+      "right": [
+        "beach",
+        "beach_water_s",
+        "beach_water_e"
+      ],
+      "bottom": [
+        "shallow_water",
+        "beach_water_se"
+      ],
+      "left": [
+        "shallow_water",
+        "beach_water_nw"
+      ]
+    }
+  }
+}
