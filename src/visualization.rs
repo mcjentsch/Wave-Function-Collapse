@@ -110,7 +110,7 @@ fn setup(mut commands: Commands) {
 
     commands.insert_resource(WFCVisual {
         state: WFCState::new(map_data),
-        timer: Timer::from_seconds(0.0001, TimerMode::Repeating),
+        timer: Timer::from_seconds(0.00001, TimerMode::Repeating),
         done: false,
     });
 

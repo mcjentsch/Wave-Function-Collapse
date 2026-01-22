@@ -2,23 +2,34 @@ use super::history::{Action, CollapseKind, VisualEvent};
 use crate::bucket_queue::BucketQueue;
 use crate::grid::TileType;
 use crate::grid::{Coord, Direction, Map};
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 use std::collections::{HashSet, VecDeque};
 use std::fmt;
 
 #[derive(Debug)]
-pub struct Contradiction {
-    pub tile_type: TileType,
-    pub coord: Coord,
+pub enum Contradiction {
+    EmptyDomain { tile_type: TileType, coord: Coord },
+    ExhaustedPaths { tile_type: TileType, coord: Coord },
 }
 
 impl fmt::Display for Contradiction {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Contradiction at tile ({}, {}) for type {:?}",
-            self.coord.row, self.coord.col, self.tile_type
-        )
+        match self {
+            Contradiction::EmptyDomain { tile_type, coord } => {
+                write!(
+                    f,
+                    "Contradiction at tile ({}, {}) for type {:?} - domain became empty during propagation",
+                    coord.row, coord.col, tile_type
+                )
+            }
+            Contradiction::ExhaustedPaths { tile_type, coord } => {
+                write!(
+                    f,
+                    "No valid tile types remaining at ({}, {}) after removing {:?}",
+                    coord.row, coord.col, tile_type
+                )
+            }
+        }
     }
 }
 
@@ -124,6 +135,10 @@ impl WFCState {
             tile.current_domain.extend(removed);
             tile.remove_contradiction_from_domain(&tile_type);
 
+            if tile.get_current_domain_size() == 0 {
+                return Err(Contradiction::ExhaustedPaths { tile_type, coord }.into());
+            }
+
             let entropy = tile.get_current_domain_size();
             self.least_entropy.insert(coord, entropy)?;
             self.timeline.push_back(VisualEvent::UndoTile { coord });
@@ -177,15 +192,31 @@ impl WFCState {
             let mut stack: Vec<Coord> = Vec::new();
             stack.push(chosen_cell);
 
-            let history_before = self.history.len();
-
             match self.propagate(chosen_cell, chosen_tile_type, &mut stack) {
                 Ok(()) => return Ok((chosen_tile_type, chosen_cell)),
-                Err(e) => {
-                    if e.downcast_ref::<Contradiction>().is_some() {
-                        self.backtrack(history_before)?;
-                    } else {
-                        return Err(e);
+                Err(_) => {
+                    let mut to = self
+                        .find_last_collapse()
+                        .map(|index| index + 1) // make it in terms of length
+                        .ok_or_else(|| anyhow!("No Tile Found Go Back To"))?;
+
+                    loop {
+                        match self.backtrack(to) {
+                            Ok(()) => break,
+                            Err(e) => {
+                                if let Some(Contradiction::ExhaustedPaths { .. }) =
+                                    e.downcast_ref::<Contradiction>()
+                                {
+                                    to = self
+                                        .find_last_collapse()
+                                        .ok_or_else(|| anyhow!("No Tile Found Go Back To"))?;
+                                    
+                                    continue;
+                                } else {
+                                    return Err(e);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -252,7 +283,7 @@ impl WFCState {
                             removed,
                             current_entropy: entropy_before_update,
                         });
-                        return Err(Contradiction {
+                        return Err(Contradiction::EmptyDomain {
                             tile_type: chosen_tile_type,
                             coord: chosen_cell,
                         }
@@ -280,7 +311,7 @@ impl WFCState {
 
                         self.timeline
                             .push_back(VisualEvent::SetTile { tile_type, coord });
-                        
+
                         self.history.push(Action::Collapse {
                             kind: CollapseKind::Implicit,
                             tile_type,
