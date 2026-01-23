@@ -16,7 +16,15 @@
     "beach_water_ne",
     "beach_water_nw",
     "beach_water_se",
-    "beach_water_sw"
+    "beach_water_sw",
+    "grass_forest_n",
+    "grass_forest_e",
+    "grass_forest_s",
+    "grass_forest_w",
+    "mountain_snow_n",
+    "mountain_snow_e",
+    "mountain_snow_s",
+    "mountain_snow_w"
   ],
   "supports": {
     "deep_water": {
@@ -131,94 +139,110 @@
         "beach",
         "forest",
         "river",
-        "desert"
+        "desert",
+        "grass_forest_n"
       ],
       "right": [
         "grass",
         "beach",
         "forest",
         "river",
-        "desert"
+        "desert",
+        "grass_forest_e"
       ],
       "bottom": [
         "grass",
         "beach",
         "forest",
         "river",
-        "desert"
+        "desert",
+        "grass_forest_s"
       ],
       "left": [
         "grass",
         "beach",
         "forest",
         "river",
-        "desert"
+        "desert",
+        "grass_forest_w"
       ]
     },
     "forest": {
       "top": [
         "forest",
         "grass",
-        "mountain"
+        "mountain",
+        "grass_forest_s"
       ],
       "right": [
         "forest",
         "grass",
-        "mountain"
+        "mountain",
+        "grass_forest_w"
       ],
       "bottom": [
         "forest",
         "grass",
-        "mountain"
+        "mountain",
+        "grass_forest_n"
       ],
       "left": [
         "forest",
         "grass",
-        "mountain"
+        "mountain",
+        "grass_forest_e"
       ]
     },
     "mountain": {
       "top": [
         "mountain",
         "forest",
-        "snow"
+        "snow",
+        "mountain_snow_n"
       ],
       "right": [
         "mountain",
         "forest",
-        "snow"
+        "snow",
+        "mountain_snow_e"
       ],
       "bottom": [
         "mountain",
         "forest",
-        "snow"
+        "snow",
+        "mountain_snow_s"
       ],
       "left": [
         "mountain",
         "forest",
-        "snow"
+        "snow",
+        "mountain_snow_w"
       ]
     },
     "snow": {
       "top": [
         "snow",
         "mountain",
-        "desert"
+        "desert",
+        "mountain_snow_s"
       ],
       "right": [
         "snow",
         "mountain",
-        "desert"
+        "desert",
+        "mountain_snow_w"
       ],
       "bottom": [
         "snow",
         "mountain",
-        "desert"
+        "desert",
+        "mountain_snow_n"
       ],
       "left": [
         "snow",
         "mountain",
-        "desert"
+        "desert",
+        "mountain_snow_e"
       ]
     },
     "desert": {
@@ -427,6 +451,118 @@
       "left": [
         "shallow_water",
         "beach_water_nw"
+      ]
+    },
+    "grass_forest_n": {
+      "top": [
+        "forest"
+      ],
+      "right": [
+        "grass"
+      ],
+      "bottom": [
+        "grass"
+      ],
+      "left": [
+        "grass"
+      ]
+    },
+    "grass_forest_e": {
+      "top": [
+        "grass"
+      ],
+      "right": [
+        "forest"
+      ],
+      "bottom": [
+        "grass"
+      ],
+      "left": [
+        "grass"
+      ]
+    },
+    "grass_forest_s": {
+      "top": [
+        "grass"
+      ],
+      "right": [
+        "grass"
+      ],
+      "bottom": [
+        "forest"
+      ],
+      "left": [
+        "grass"
+      ]
+    },
+    "grass_forest_w": {
+      "top": [
+        "grass"
+      ],
+      "right": [
+        "grass"
+      ],
+      "bottom": [
+        "grass"
+      ],
+      "left": [
+        "forest"
+      ]
+    },
+    "mountain_snow_n": {
+      "top": [
+        "snow"
+      ],
+      "right": [
+        "mountain"
+      ],
+      "bottom": [
+        "mountain"
+      ],
+      "left": [
+        "mountain"
+      ]
+    },
+    "mountain_snow_e": {
+      "top": [
+        "mountain"
+      ],
+      "right": [
+        "snow"
+      ],
+      "bottom": [
+        "mountain"
+      ],
+      "left": [
+        "mountain"
+      ]
+    },
+    "mountain_snow_s": {
+      "top": [
+        "mountain"
+      ],
+      "right": [
+        "mountain"
+      ],
+      "bottom": [
+        "snow"
+      ],
+      "left": [
+        "mountain"
+      ]
+    },
+    "mountain_snow_w": {
+      "top": [
+        "mountain"
+      ],
+      "right": [
+        "mountain"
+      ],
+      "bottom": [
+        "mountain"
+      ],
+      "left": [
+        "snow"
       ]
     }
   }

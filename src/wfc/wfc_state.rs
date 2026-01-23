@@ -1,9 +1,9 @@
 use super::history::{Action, CollapseKind, VisualEvent};
 use crate::bucket_queue::BucketQueue;
 use crate::grid::TileType;
-use crate::grid::{Coord, Direction, Map};
+use crate::grid::{Coord, Direction, Domain, Map};
 use anyhow::{Result, anyhow};
-use std::collections::{HashSet, VecDeque};
+use std::collections::{VecDeque};
 use std::fmt;
 
 #[derive(Debug)]
@@ -71,12 +71,8 @@ impl WFCState {
         }
     }
 
-    pub fn print_map(&self) {
-        self.map.print();
-    }
-
     fn set_initial_entropy(map: &Map) -> BucketQueue {
-        let mut queue = BucketQueue::new(map.tile_data.tiles.len());
+        let mut queue = BucketQueue::new(map.tile_data.tiles.entropy() as usize);
 
         for (row_idx, row) in map.tiles.iter().enumerate() {
             for (col_idx, tile) in row.iter().enumerate() {
@@ -132,8 +128,8 @@ impl WFCState {
         {
             let tile = self.map.get_tile_mut(coord);
             tile.tile_type = None;
-            tile.current_domain.extend(removed);
-            tile.remove_contradiction_from_domain(&tile_type);
+            tile.current_domain.add_tiles(removed);
+            tile.remove_contradiction_from_domain(tile_type);
 
             if tile.get_current_domain_size() == 0 {
                 return Err(Contradiction::ExhaustedPaths { tile_type, coord }.into());
@@ -146,10 +142,10 @@ impl WFCState {
         Ok(())
     }
 
-    fn undo_collapse(&mut self, coord: Coord, removed: Vec<TileType>) -> anyhow::Result<()> {
+    fn undo_collapse(&mut self, coord: Coord, removed: Domain) -> anyhow::Result<()> {
         let tile = self.map.get_tile_mut(coord);
         tile.tile_type = None;
-        tile.current_domain.extend(removed);
+        tile.current_domain.add_tiles(removed);
 
         let entropy = tile.get_current_domain_size();
         self.least_entropy.insert(coord, entropy)?;
@@ -157,13 +153,9 @@ impl WFCState {
         Ok(())
     }
 
-    fn undo_domain_reduction(
-        &mut self,
-        coord: Coord,
-        removed: Vec<TileType>,
-    ) -> anyhow::Result<()> {
+    fn undo_domain_reduction(&mut self, coord: Coord, removed: Domain) -> anyhow::Result<()> {
         let tile = self.map.get_tile_mut(coord);
-        tile.current_domain.extend(removed);
+        tile.current_domain.add_tiles(removed);
         let entropy = tile.get_current_domain_size();
         self.least_entropy.update_entropy(coord, entropy)?;
         Ok(())
@@ -210,7 +202,7 @@ impl WFCState {
                                     to = self
                                         .find_last_collapse()
                                         .ok_or_else(|| anyhow!("No Tile Found Go Back To"))?;
-                                    
+
                                     continue;
                                 } else {
                                     return Err(e);
@@ -234,16 +226,16 @@ impl WFCState {
 
             for (direction, coord) in neighbours.into_iter().flatten() {
                 let current_tile_types =
-                    self.map.tiles[changed_cell.row][changed_cell.col].get_current_domain();
+                    self.map.tiles[changed_cell.row][changed_cell.col].current_domain;
 
-                let mut all_supported_tile_types: HashSet<TileType> = HashSet::new();
+                let mut all_supported_tile_types = Domain::empty();
 
-                for current_tile_type in current_tile_types.iter() {
+                for current_tile_type in current_tile_types.iter_tiles() {
                     let tile_constraints = self
                         .map
                         .tile_data
                         .supports
-                        .get(current_tile_type)
+                        .get(&current_tile_type)
                         .ok_or_else(|| {
                             anyhow::anyhow!(
                                 "Missing constraint data for tile type {:?}",
@@ -252,13 +244,13 @@ impl WFCState {
                         })?;
 
                     let new_constraints = match direction {
-                        Direction::Top => &tile_constraints.top,
-                        Direction::Bottom => &tile_constraints.bottom,
-                        Direction::Right => &tile_constraints.right,
-                        Direction::Left => &tile_constraints.left,
+                        Direction::Top => tile_constraints.top,
+                        Direction::Bottom => tile_constraints.bottom,
+                        Direction::Right => tile_constraints.right,
+                        Direction::Left => tile_constraints.left,
                     };
 
-                    all_supported_tile_types.extend(new_constraints);
+                    all_supported_tile_types.add_tiles(new_constraints);
                 }
 
                 let current_tile = self.map.get_tile_mut(coord);
@@ -270,7 +262,7 @@ impl WFCState {
 
                 let entropy_before_update = current_tile.get_current_domain_size();
 
-                let removed_tiles = current_tile.update_constraints(&all_supported_tile_types);
+                let removed_tiles = current_tile.update_constraints(all_supported_tile_types);
 
                 if let Some(removed) = removed_tiles {
                     let entropy_after_update = current_tile.get_current_domain_size();

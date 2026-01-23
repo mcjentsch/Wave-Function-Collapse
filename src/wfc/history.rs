@@ -1,4 +1,4 @@
-use crate::grid::{Coord, TileType};
+use crate::grid::{Coord, Domain, TileType};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum CollapseKind {
@@ -12,11 +12,11 @@ pub enum Action {
         kind: CollapseKind,
         tile_type: TileType,
         coord: Coord,
-        removed: Vec<TileType>,
+        removed: Domain,
     },
     DomainReduction {
         coord: Coord,
-        removed: Vec<TileType>,
+        removed: Domain,
         current_entropy: usize,
     },
 }
